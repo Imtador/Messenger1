@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messenger1</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="screen">
+    <div class="auth-container">
+      <h1>💬 Messenger1</h1>
+      
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
+
+      <form id="login-form" class="auth-form active">
+        <input type="text" id="login-username" placeholder="Username" required autocomplete="username">
+        <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
+        <button type="submit">Login</button>
+        <p class="error-msg" id="login-error"></p>
+      </form>
+
+      <form id="register-form" class="auth-form">
+        <input type="text" id="register-username" placeholder="Username (3-30 chars)" required autocomplete="username">
+        <input type="email" id="register-email" placeholder="Email" required autocomplete="email">
+        <input type="password" id="register-password" placeholder="Password (6+ chars)" required autocomplete="new-password">
+        <button type="submit">Register</button>
+        <p class="error-msg" id="register-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main App Screen -->
+  <div id="app-screen" class="screen hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>💬 Messenger1</h2>
+        <button id="new-chat-btn" class="btn-icon" title="New Chat">+</button>
+      </div>
+
+      <div class="user-info">
+        <span id="current-username"></span>
+        <button id="logout-btn" class="btn-small">Logout</button>
+      </div>
+
+      <div class="conversation-list" id="conversation-list">
+        <!-- Conversations will be populated here -->
+      </div>
+
+      <div class="online-users">
+        <h3>Online Users</h3>
+        <ul id="online-users-list">
+          <!-- Online users will be populated here -->
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <main class="chat-area">
+      <div class="chat-header" id="chat-header">
+        <h2 id="chat-name">Select a Chat</h2>
+        <span class="connection-status" id="connection-status"></span>
+      </div>
+
+      <div class="messages-container" id="messages-container">
+        <div class="welcome-message">
+          <p>Select a conversation to start messaging</p>
+        </div>
+      </div>
+
+      <div class="typing-indicator" id="typing-indicator"></div>
+
+      <div class="message-input-container">
+        <button id="upload-btn" class="btn-icon" title="Upload File">📎</button>
+        <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/webp,video/mp4">
+        <input type="text" id="message-input" placeholder="Type a message..." maxlength="5000" disabled>
+        <button id="send-btn" class="btn-icon" disabled>➤</button>
+      </div>
+
+      <!-- Upload Progress -->
+      <div class="upload-progress hidden" id="upload-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span id="upload-status">Uploading...</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- New Chat Modal -->
+  <div class="modal hidden" id="new-chat-modal">
+    <div class="modal-content">
+      <h3>Start New Chat</h3>
+      <div id="user-list">
+        <!-- Users will be populated here -->
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="cancel-new-chat-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Preview Modal -->
+  <div class="modal hidden" id="image-preview-modal">
+    <div class="modal-content modal-large">
+      <img id="preview-image" src="" alt="Preview">
+      <button class="btn-close-preview" id="close-preview-btn">✕</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
