@@ -1,0 +1,53 @@
+# SecureChat Caddy Configuration
+# Replace example.com with your actual domain
+
+{
+    email admin@example.com
+}
+
+# HTTP redirect to HTTPS
+http://example.com {
+    redir https://example.com{uri} permanent
+}
+
+# HTTPS with automatic certificates
+https://example.com {
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' wss://example.com http://localhost:3000"
+    }
+
+    # Frontend
+    reverse_proxy / {
+        to frontend:80
+    }
+
+    # Backend API
+    reverse_proxy /api/* {
+        to backend:3000
+    }
+
+    # WebSocket support
+    reverse_proxy /socket.io/* {
+        to backend:3000
+        transport http {
+            versions h2c 2
+        }
+    }
+}
+
+# Development (no HTTPS)
+:80 {
+    reverse_proxy /api/* backend:3000
+    reverse_proxy /socket.io/* backend:3000 {
+        transport http {
+            versions h2c 2
+        }
+    }
+    reverse_proxy / frontend:80
+}
